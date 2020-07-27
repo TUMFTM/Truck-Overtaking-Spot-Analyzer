@@ -139,6 +139,10 @@ class VelocityProfile:
                 start_vel -= 0.2
 
         self.velocity_profile = self.calculate_velocity_profile(0, len(slope) * 50, start_vel)
+        # Sometimes one 10m element ist missing due to discretisation. In that case, duplicate the last element.
+        if len(self.velocity_profile) < len(slope) * 50 / 10:
+            self.velocity_profile.append(self.velocity_profile[-1])
+        assert len(self.velocity_profile) == len(slope) * 50 / 10
 
     def get_desired_velocity(self, pos=None):
         """Returns the value of the desired velocity profile at a specified position"""
