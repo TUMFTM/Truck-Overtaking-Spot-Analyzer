@@ -236,6 +236,9 @@ class OvertakingSpotAnalyzerGUI(tk.Tk):
 
             time_plot.set(ylim=(min_y - 1, max_y + 5))
             time_plot.text(30, (max_y + 5 - min_y) * 0.91 + min_y, title, fontsize=12, ha='left')
+            time_plot.text(30, (max_y + 5 - min_y) * 0.78 + min_y,
+                           "Details to every Starting Point \nGray: No overtaking possible", fontsize=8, ha='left')
+
 
         else:
             rect_full = patches.Rectangle((-5, -5), hill_l + 5, 75, edgecolor='none', facecolor='whitesmoke')
@@ -427,20 +430,22 @@ class OvertakingSpotAnalyzerGUI(tk.Tk):
 
         Label(self, text="Parameter Setting for Truck " + name).grid(row=row, column=0, columnspan=width)
 
-        Scale(self, from_=3000, to=0, label="start", command=self.check_a_start_pos,
+        Scale(self, from_=3000, to=0, label="Start", command=self.check_a_start_pos,
               variable=truck['start'], resolution=10).grid(row=row + 1, column=0, rowspan=2)
 
-        Scale(self, from_=40, to=10, label="weight", command=self.trigger_osa_query,
+        Scale(self, from_=40, to=10, label="Weight", command=self.trigger_osa_query,
               variable=truck['weight']).grid(row=row + 1, column=1, rowspan=2)
 
-        Scale(self, from_=90, to=60, label="vel", command=self.trigger_osa_query,
+        Scale(self, from_=90, to=60, label="Vel", command=self.trigger_osa_query,
               variable=truck['vel']).grid(row=row + 1, column=2, rowspan=2)
 
-        Scale(self, from_=10, to=0, label="vel+", command=self.trigger_osa_query,
+        Scale(self, from_=10, to=0, label="Vel+", command=self.trigger_osa_query,
               length=50, variable=truck['vel_p']).grid(row=row + 1, column=3, rowspan=1)
 
-        Scale(self, from_=0, to=-10, label="vel-", command=self.trigger_osa_query,
+        Scale(self, from_=0, to=-10, label="Vel-", command=self.trigger_osa_query,
               length=50, variable=truck['vel_m']).grid(row=row + 2, column=3, rowspan=1)
+
+        Label(self, text="Start [m]\nWeight [t]\n Vel [km/h]").grid(row=row, column=4, rowspan=2)
 
         return truck
 
@@ -453,7 +458,7 @@ class OvertakingSpotAnalyzerGUI(tk.Tk):
         for i in range(5):
             hill['y'].append(IntVar())
             text = str(25 * i) + '%'
-            Scale(self, from_=200, to=0, label=text, command=self.generate_slope,
+            Scale(self, from_=100, to=0, label=text, command=self.generate_slope,
                   variable=hill['y'][i]).grid(row=2, column=i)
 
         Scale(self, from_=5000, to=10000, resolution=100, label="Length", orient='horizontal',
@@ -474,11 +479,11 @@ class OvertakingSpotAnalyzerGUI(tk.Tk):
 
     def generate_calculation_gui(self, width):
         """Generates all GUI elements required for setting the Stepsize, live Update and displaying the time"""
-        Label(self, text="Calculation step size in meter and required time").grid(row=10, column=0, columnspan=width)
+        Label(self, text="Calculation Step Size in meter and Required Time").grid(row=10, column=0, columnspan=width)
 
         calculation = {'step': IntVar(), 'update': IntVar()}
 
-        Scale(self, from_=2, to=24, resolution=2, label="Step size", orient='horizontal', variable=calculation['step'],
+        Scale(self, from_=2, to=24, resolution=2, label="Step Size", orient='horizontal', variable=calculation['step'],
               command=self.trigger_osa_query).grid(row=11, column=0, columnspan=2)
 
         Checkbutton(self, text="Update", variable=calculation['update'],
@@ -514,13 +519,13 @@ class OvertakingSpotAnalyzerGUI(tk.Tk):
 
         cost_parameter = {'param': StringVar(), 'v_car': IntVar(), 'display': StringVar()}
 
-        modes = ['Mertens', 'Kock']
+        modes = ['Bourdon', 'Kock']
         cost_parameter['param'].set(modes[0])
         for i, mode in enumerate(modes):
             Radiobutton(self, text=mode, variable=cost_parameter['param'], value=mode,
                         command=self.trigger_osa_query).grid(row=15, column=i)
 
-        Scale(self, from_=80, to=160, resolution=10, label="Car vel", orient='horizontal',
+        Scale(self, from_=80, to=160, resolution=10, label="Car vel [km/h]", orient='horizontal',
               variable=cost_parameter['v_car'],
               command=self.trigger_osa_query).grid(row=15, column=2, columnspan=1)
         cost_parameter['v_car'].set(120)
@@ -530,6 +535,18 @@ class OvertakingSpotAnalyzerGUI(tk.Tk):
         for i, mode in enumerate(modes, start=3):
             Radiobutton(self, text=mode, variable=cost_parameter['display'], value=mode,
                         command=self.changed_visualized_cost_mode).grid(row=15, column=i)
+
+
+        #Label(self, text="______________________________________________________________________________________________").grid(row=16, column=0, columnspan=width)
+        t = Label(self, text="""
+Cooperative Truck Overtaking on Freeways
+Fifteenth International Conference on Ecological Vehicles and Renewable Energies
+Mertens, Jan Cedric; Jahn, Lennard; Hauenstein, Jürgen; Diermeyer, Frank; Kraus, Sven
+2020""", anchor="w",justify="left")
+        t.config(font=("Verdana", 7))
+        t.grid(row=16, column=0, columnspan=width)
+       # Label(self, text="______________________________________________________________________________________________\n\n\n").grid(row=18, column=0, columnspan=width)
+
 
         return cost_parameter
 
