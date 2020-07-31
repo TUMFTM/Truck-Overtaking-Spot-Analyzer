@@ -536,8 +536,6 @@ class OvertakingSpotAnalyzerGUI(tk.Tk):
             Radiobutton(self, text=mode, variable=cost_parameter['display'], value=mode,
                         command=self.changed_visualized_cost_mode).grid(row=15, column=i)
 
-
-        #Label(self, text="______________________________________________________________________________________________").grid(row=16, column=0, columnspan=width)
         t = Label(self, text="""
 Cooperative Truck Overtaking on Freeways
 Fifteenth International Conference on Ecological Vehicles and Renewable Energies
@@ -545,8 +543,6 @@ Mertens, Jan Cedric; Jahn, Lennard; Hauenstein, Jürgen; Diermeyer, Frank; Kraus
 2020""", anchor="w",justify="left")
         t.config(font=("Verdana", 7))
         t.grid(row=16, column=0, columnspan=width)
-       # Label(self, text="______________________________________________________________________________________________\n\n\n").grid(row=18, column=0, columnspan=width)
-
 
         return cost_parameter
 
