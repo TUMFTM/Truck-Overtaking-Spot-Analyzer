@@ -65,6 +65,7 @@ The required calculation time is displayed right next to "stepsize" slider
 
 ### Read the Output
 The "Passive Cooperation" and "Active Cooperation" plots show the required duration and time/fuel-differences for each possible starting point of the overtaking maneuver. 
+Within the gray area an overtaking maneuver is not possible, because Truck A has not reach B yet, or because the overtaking maneuver can not be finished before the road ends. 
 The corresponding velocity profiles of each scenario von be visualized with the checkboxes on the left. 
 The best possible costs for each scenario is displayed in the bottom plot. With the checkboxes you can either select the absolute "Abs" or relative "Rel" costs view.  
 
